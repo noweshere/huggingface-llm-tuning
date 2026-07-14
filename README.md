@@ -38,6 +38,7 @@ cd huggingface-llm-tuning
 # Initialize
 git init .
 ```
+
 2. Install dependencies:
 ```bash
 python3 -m pip install --upgrade pip && \
@@ -48,6 +49,7 @@ python3 -m pip install \
     "peft>=0.9,<0.12" \
     "accelerate>=0.27,<0.30"
 ```
+
 3. (Optional) Change any training settings:
 At the top of the fine-tuning.py script, there aree variables to change the dataset and model used, as well as other configuration settings.
 4. Run the script:
@@ -60,6 +62,39 @@ python3 fine-tuning.py
 2. Run the script:
 ```bash
 python3 fine-tuning.py
+```
+
+## Running the Model on Hermes
+1. Install Hermes:
+```bash
+# Linux/MacOS
+curl -fsSL https://hermes-agent.nousresearch.com/install.sh | bash
+
+# Windows
+irm https://hermes-agent.nousresearch.com/install.ps1 | iex
+```
+
+2. Install Ollama:
+```bash
+# Linux/MacOS
+curl -fsSL https://ollama.com/install.sh | sh
+
+# Windows
+irm https://ollama.com/install.ps1 | iex
+```
+
+3. Pull the model:
+```bash
+ollama pull <name-of-model>
+```
+
+4. Set the model in Hermes:
+ ```bash
+hermes model
+# Select: "Custom endpoint (self-hosted / vLLM / etc.)"
+# API base URL: http://localhost:11434/v1
+# API key: (leave blank for local Ollama)
+# Model name: qwen3:14b
 ```
 
 [View a video explanation here](video link)
