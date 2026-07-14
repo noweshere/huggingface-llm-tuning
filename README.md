@@ -1,13 +1,13 @@
 # Spotify Playlist AI
 
  A small LLM fine-tuned from the TinyLlama-1.1B-Chat-v1.0 model from HuggingFace that was trained on the maharshipandya/spotify-tracks-dataset from HuggingFace. After training, the model should be able to create custom playlists with data from Spotify based on the user's preferences.
+ 
  The main fine-tuning.py script can be modified easily to accomidate other models and datasets. The datasets can be loaded locally or through HuggingFace by changing lines 75, 77, and 86. Line 75 chooses to pull either from HuggingFace or locally, line 77 is the name of the dataset in HuggingFace, and line 86 is the path to the local dataset.
+ 
  As for models, the fine-tuning.py script can be modified on lines 61 and 64 to accomidate other models. Line 61 is the name of the model on HuggingFace, and line 64 defines the tokenizer. For most models, you will want to leave line 64 as None to use the default tokenizer for that model.
 
  You can find the fine-tuned model from this project on HuggingFace:
  [My HuggingFace](https://huggingface.co/noweshere)
-
-![add image descrition here](direct image link here)
 
 ## The Algorithm
 
