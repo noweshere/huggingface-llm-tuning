@@ -6,14 +6,55 @@
 
 ## The Algorithm
 
-Add an explanation of the algorithm and how it works. Make sure to include details about how the code works, what it depends on, and any other relevant info. Add images or other descriptions for your project here. 
+#### Pipeline:
+      1. Validate configuration.
+      2. Set random seeds for reproducibility.
+      3. Load and configure the tokenizer.
+      4. Load the base model.
+      5. Apply LoRA adapters.
+      6. Load, format, and tokenize the dataset.
+      7. Build the Trainer.
+      8. Train with OOM recovery.
+      9. Save results.
+      10. Final summary.
 
 ## Running this project
 
+#### Note: In order to run this project, you need Jetpack 6.2 or newer.
+
+### Starting Training
 1. Clone this repo:
-  '''
-  git clone https://github.com/noweshere/huggingface-llm-tuning.git
-  '''
-3. Make sure to include any required libraries that need to be installed for your project to run.
+```bash
+git clone https://github.com/noweshere/huggingface-llm-tuning.git
+
+# Go into the folder
+cd huggingface-llm-tuning
+
+# Initialize
+git init .
+```
+2. Install dependencies:
+```bash
+python3 -m pip install --upgrade pip && \
+python3 -m pip install \
+    transformers==4.38.2 \
+    numpy==1.26.4 \
+    tensorboard==2.21.0 \
+    "peft>=0.9,<0.12" \
+    "accelerate>=0.27,<0.30"
+```
+3. (Optional) Change any training settings:
+At the top of the fine-tuning.py script, there aree variables to change the dataset and model used, as well as other configuration settings.
+4. Run the script:
+```bash
+python3 fine-tuning.py
+```
+
+### Running the Model
+1. At the top of the fine-tuning.py script, change RUN_MODE on line 34 to be "inference".
+2. Run the script:
+```bash
+python3 finr-tuning.py
+```
 
 [View a video explanation here](video link)
