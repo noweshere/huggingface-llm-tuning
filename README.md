@@ -1,4 +1,4 @@
-# Spotify Playlist AI
+# Spotify Playlist AI & General Fine-Tuning
 
  A small LLM fine-tuned from the TinyLlama-1.1B-Chat-v1.0 model from HuggingFace that was trained on the maharshipandya/spotify-tracks-dataset from HuggingFace. After training, the model should be able to create custom playlists with data from Spotify based on the user's preferences.
  
