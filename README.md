@@ -54,7 +54,7 @@ python3 fine-tuning.py
 1. At the top of the fine-tuning.py script, change RUN_MODE on line 34 to be "inference".
 2. Run the script:
 ```bash
-python3 finr-tuning.py
+python3 fine-tuning.py
 ```
 
 [View a video explanation here](video link)
