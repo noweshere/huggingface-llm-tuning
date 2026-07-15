@@ -87,6 +87,10 @@ irm https://ollama.com/install.ps1 | iex
 ```bash
 ollama pull <name-of-model>
 ```
+### Note: You can run just the plain model by running:
+```bash
+ollama run <name-of-model>
+```
 
 4. Set the model in Hermes:
  ```bash
