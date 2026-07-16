@@ -1,6 +1,6 @@
-# Spotify Playlist AI & General Fine-Tuning
+# Spotify AI & General Fine-Tuning
 
- A small LLM fine-tuned from the TinyLlama-1.1B-Chat-v1.0 model from HuggingFace that was trained on the maharshipandya/spotify-tracks-dataset from HuggingFace. After training, the model should be able to create custom playlists with data from Spotify based on the user's preferences.
+ A small LLM fine-tuned from the TinyLlama-1.1B-Chat-v1.0 model from HuggingFace that was trained on the maharshipandya/spotify-tracks-dataset from HuggingFace. After training, the model should be able to talk to the user about their favorite music.
  
  The main fine-tuning.py script can be modified easily to accomidate other models and datasets. The datasets can be loaded locally or through HuggingFace by changing lines 75, 77, and 86. Line 75 chooses to pull either from HuggingFace or locally, line 77 is the name of the dataset in HuggingFace, and line 86 is the path to the local dataset.
  
@@ -85,11 +85,11 @@ irm https://ollama.com/install.ps1 | iex
 
 3. Pull the model:
 ```bash
-ollama pull <name-of-model>
+ollama pull noweshere/song-chatbot
 ```
 ### Note: You can run just the plain model by running:
 ```bash
-ollama run <name-of-model>
+ollama run noweshere/song-chatbot
 ```
 
 4. Set the model in Hermes:
