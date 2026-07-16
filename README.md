@@ -101,4 +101,4 @@ hermes model
 # Model name: hf.co/noweshere/song-chatbot:F16
 ```
 
-[View a video explanation here](video link)
+[View a video explanation here](https://drive.google.com/file/d/16xPZSsab8l6-zd9d4nB2KwVhnmlhxb0N/view?usp=sharing)
