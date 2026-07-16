@@ -31,7 +31,7 @@
 # Mode of operation:
 #   "train"     - Run fine-tuning on the dataset.
 #   "inference" - Run inference (text generation) on a fine-tuned model or the base model.
-RUN_MODE: str = "train"
+RUN_MODE: str = "inference"
 
 # --- Inference settings (only used if RUN_MODE is "inference") ---
 # The prompt to generate text for.
@@ -58,7 +58,7 @@ INFERENCE_DO_SAMPLE: bool = True
 # The Hugging Face model ID or local path to a causal language model.
 # Examples: "gpt2", "TinyLlama/TinyLlama-1.1B-Chat-v1.0", "Qwen/Qwen2-0.5B",
 #           "google/gemma-2b", "microsoft/phi-2", "mistralai/Mistral-7B-v0.1"
-MODEL_NAME: str = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+MODEL_NAME: str = "gpt2"
 
 # Tokenizer name — set to None to use the same as MODEL_NAME.
 TOKENIZER_NAME = None
@@ -97,10 +97,10 @@ VALIDATION_SPLIT_PERCENT: float = 5.0
 DATASET_FORMAT: str = "auto"
 
 # Column names — set to None to auto-detect.
-TEXT_FIELD = None        # Column containing raw text (for "text" format)
-PROMPT_FIELD = None      # Column containing the prompt/instruction
-RESPONSE_FIELD = None    # Column containing the response/output
-CONVERSATION_FIELD = None  # Column containing conversation messages list
+TEXT_FIELD = "artists"        # Column containing raw text (for "text" format)
+PROMPT_FIELD = "track_name"      # Column containing the prompt/instruction
+RESPONSE_FIELD = "track_genre"    # Column containing the response/output
+CONVERSATION_FIELD = "popularity"  # Column containing conversation messages list
 
 # Whether to stream the dataset (useful for very large datasets).
 STREAMING: bool = False
@@ -218,7 +218,7 @@ SAVE_TOTAL_LIMIT: int = 3
 #   pip install bitsandbytes
 #
 # Set ENABLE_QLORA = True to activate.
-ENABLE_QLORA: bool = True
+ENABLE_QLORA: bool = False
 
 # Quantisation type for QLoRA.  "nf4" is recommended.
 QLORA_QUANT_TYPE: str = "nf4"
