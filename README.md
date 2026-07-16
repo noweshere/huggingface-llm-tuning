@@ -7,7 +7,7 @@
  As for models, the fine-tuning.py script can be modified on lines 61 and 64 to accomidate other models. Line 61 is the name of the model on HuggingFace, and line 64 defines the tokenizer. For most models, you will want to leave line 64 as None to use the default tokenizer for that model.
 
  You can find the fine-tuned model from this project on HuggingFace:
- [My HuggingFace](https://huggingface.co/noweshere)
+ [My HuggingFace](https://huggingface.co/noweshere/song-chatbot)
 
 ## The Algorithm
 
@@ -85,11 +85,11 @@ irm https://ollama.com/install.ps1 | iex
 
 3. Pull the model:
 ```bash
-ollama pull noweshere/song-chatbot
+ollama pull hf.co/noweshere/song-chatbot:F16
 ```
 ### Note: You can run just the plain model by running:
 ```bash
-ollama run noweshere/song-chatbot
+ollama run hf.co/noweshere/song-chatbot:F16
 ```
 
 4. Set the model in Hermes:
@@ -98,7 +98,7 @@ hermes model
 # Select: "Custom endpoint (self-hosted / vLLM / etc.)"
 # API base URL: http://localhost:11434/v1
 # API key: (leave blank for local Ollama)
-# Model name: qwen3:14b
+# Model name: hf.co/noweshere/song-chatbot:F16
 ```
 
 [View a video explanation here](video link)
