@@ -101,4 +101,31 @@ hermes model
 # Model name: hf.co/noweshere/song-chatbot:F16
 ```
 
+## Packaging a Model (with llama.cpp)
+1. Install the program and dependencies:
+```bash
+git clone https://github.com/ggml-org/llama.cpp.git
+cd llama.cpp
+pip install -r requirements.txt
+```
+
+2. Convert Safetensors to GGUF
+```bash
+python convert_hf_to_gguf.py /path/to/your/safetensors/model/dir
+```
+#### Note: The output file is typically named ggml-model-f16.gguf or similar and is saved in the model directory by default.
+
+3. Quantize (Optional but Recommended):
+Use the llama-quantize tool to compress the GGUF file into smaller, faster formats like Q4_K_M or Q8_0.
+```bash
+./build/bin/llama-quantize /path/to/model/ggml-model-f16.gguf /path/to/output/model-Q4_K_M.gguf Q4_K_M
+```
+#### Key Quantization Types:
+
+    Q4_K_M: Balanced quality and size (recommended for most users). 
+    Q8_0: High fidelity, larger size.
+    Q2_K: Smallest size, lower quality.
+    F16: Full precision (no compression).
+
+
 [View a video explanation here](https://drive.google.com/file/d/16xPZSsab8l6-zd9d4nB2KwVhnmlhxb0N/view?usp=sharing)
