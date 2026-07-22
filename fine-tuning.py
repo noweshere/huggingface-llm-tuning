@@ -31,7 +31,7 @@
 # Mode of operation:
 #   "train"     - Run fine-tuning on the dataset.
 #   "inference" - Run inference (text generation) on a fine-tuned model or the base model.
-RUN_MODE: str = "inference"
+RUN_MODE: str = "train"
 
 # --- Inference settings (only used if RUN_MODE is "inference") ---
 # The prompt to generate text for.
@@ -58,7 +58,7 @@ INFERENCE_DO_SAMPLE: bool = True
 # The Hugging Face model ID or local path to a causal language model.
 # Examples: "gpt2", "TinyLlama/TinyLlama-1.1B-Chat-v1.0", "Qwen/Qwen2-0.5B",
 #           "google/gemma-2b", "microsoft/phi-2", "mistralai/Mistral-7B-v0.1"
-MODEL_NAME: str = "gpt2"
+MODEL_NAME: str = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
 
 # Tokenizer name — set to None to use the same as MODEL_NAME.
 TOKENIZER_NAME = None
@@ -111,7 +111,7 @@ CACHE_DIR = None
 
 # ── Training Hyperparameters ────────────────────────────────────────────────
 # Number of full passes over the training dataset.
-EPOCHS: int = 1
+EPOCHS: int = 2
 
 # Peak learning rate for the optimiser.
 LEARNING_RATE: float = 2e-4
@@ -145,10 +145,10 @@ MAX_GRAD_NORM: float = 1.0
 LOGGING_STEPS: int = 10
 
 # Save a checkpoint every N steps.  Set to 0 to save only at end of each epoch.
-SAVE_STEPS: int = 200
+SAVE_STEPS: int = 1000
 
 # Run evaluation every N steps.  Set to 0 to evaluate only at end of each epoch.
-EVAL_STEPS: int = 200
+EVAL_STEPS: int = 1000
 
 # Random seed for reproducibility.
 SEED: int = 42
@@ -195,7 +195,7 @@ OUTPUT_DIR: str = "./finetuned_output"
 
 # Path to a checkpoint to resume training from.  Set to None to start fresh.
 # Use "latest" to auto-detect the most recent checkpoint in OUTPUT_DIR.
-RESUME_CHECKPOINT = None
+RESUME_CHECKPOINT = "latest"
 
 # Automatically estimate a safe micro-batch size based on available VRAM.
 # If True, overrides BATCH_SIZE with the estimated value.
@@ -1870,29 +1870,41 @@ def save_results(model, tokenizer):
 
     # ── Save merged model ────────────────────────────────────────────────────
     if SAVE_MERGED_MODEL:
-        logger.info("Merging LoRA weights into base model...")
+        logger.info("Merging LoRA weights into base model (High-Performance Mode)...")
         cleanup_memory()
 
         try:
-            merged_model = model.merge_and_unload()
+            # 1. Unload model from GPU to CPU to free VRAM completely
+            logger.info("Moving model to CPU for memory-efficient merging...")
+            model = model.to("cpu")
+            cleanup_memory()
+
+            # 2. Merge LoRA adapter weights in half precision on CPU
+            # safetensors and torch overhead is minimized
+            with torch.no_grad():
+                merged_model = model.merge_and_unload(progressbar=True)
+
+            # 3. Define optimized output directory
             merged_dir = output_dir / "merged"
             merged_dir.mkdir(parents=True, exist_ok=True)
-            merged_model.save_pretrained(str(merged_dir))
-            tokenizer.save_pretrained(str(merged_dir))
-            logger.info("Merged model saved to: %s", merged_dir)
 
-            # Log merged model size.
-            merged_size = sum(
-                f.stat().st_size for f in merged_dir.rglob("*") if f.is_file()
+            # 4. Save using SafeTensors with chunked shards
+            logger.info("Saving merged model with SafeTensors and 2GB sharding...")
+            merged_model.save_pretrained(
+                str(merged_dir),
+                safe_serialization=True,     # Fast memory-mapped loading
+                max_shard_size="2GB",        # Lowers peak RAM overhead during load/save
             )
-            logger.info("Merged model size: %.2f GB", merged_size / (1024 ** 3))
+            tokenizer.save_pretrained(str(merged_dir))
+
+            # Clean up temporary merged model object
+            del merged_model
+            cleanup_memory()
+
+            logger.info("Merged model saved successfully to: %s", merged_dir)
 
         except Exception as e:
-            logger.error("Failed to merge and save model: %s", e)
-            logger.error(
-                "The LoRA adapter has been saved separately and can be "
-                "merged later."
-            )
+            logger.error("Failed to merge model: %s", e)
             if not SAVE_ADAPTERS:
                 # Emergency save of the adapter if we haven't already.
                 emergency_adapter_dir = output_dir / "adapter_emergency"
