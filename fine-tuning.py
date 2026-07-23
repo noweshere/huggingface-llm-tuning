@@ -58,7 +58,7 @@ INFERENCE_DO_SAMPLE: bool = True
 # The Hugging Face model ID or local path to a causal language model.
 # Examples: "gpt2", "TinyLlama/TinyLlama-1.1B-Chat-v1.0", "Qwen/Qwen2-0.5B",
 #           "google/gemma-2b", "microsoft/phi-2", "mistralai/Mistral-7B-v0.1"
-MODEL_NAME: str = "TinyLlama/TinyLlama-1.1B-Chat-v1.0"
+MODEL_NAME: str = "google/gemma-2b"
 
 # Tokenizer name — set to None to use the same as MODEL_NAME.
 TOKENIZER_NAME = None
@@ -76,7 +76,7 @@ DATASET_SOURCE: str = "huggingface"
 
 # --- Hugging Face dataset settings ---
 # The HF dataset name (e.g. "wikitext", "tatsu-lab/alpaca", "Open-Orca/OpenOrca").
-DATASET_NAME: str = "maharshipandya/spotify-tracks-dataset"
+DATASET_NAME: str = "MoreThought/Fable-5-Max-Reasoning-Filtered"
 
 # Optional dataset configuration/subset name (e.g. "wikitext-2-raw-v1").
 DATASET_CONFIG = "default"
@@ -97,10 +97,10 @@ VALIDATION_SPLIT_PERCENT: float = 5.0
 DATASET_FORMAT: str = "auto"
 
 # Column names — set to None to auto-detect.
-TEXT_FIELD = "artists"        # Column containing raw text (for "text" format)
-PROMPT_FIELD = "track_name"      # Column containing the prompt/instruction
-RESPONSE_FIELD = "track_genre"    # Column containing the response/output
-CONVERSATION_FIELD = "popularity"  # Column containing conversation messages list
+TEXT_FIELD = None       # Column containing raw text (for "text" format)
+PROMPT_FIELD = "query"      # Column containing the prompt/instruction
+RESPONSE_FIELD = "thinking"    # Column containing the response/output
+CONVERSATION_FIELD = None  # Column containing conversation messages list
 
 # Whether to stream the dataset (useful for very large datasets).
 STREAMING: bool = False
@@ -145,10 +145,10 @@ MAX_GRAD_NORM: float = 1.0
 LOGGING_STEPS: int = 10
 
 # Save a checkpoint every N steps.  Set to 0 to save only at end of each epoch.
-SAVE_STEPS: int = 1000
+SAVE_STEPS: int = 2000
 
 # Run evaluation every N steps.  Set to 0 to evaluate only at end of each epoch.
-EVAL_STEPS: int = 1000
+EVAL_STEPS: int = 2000
 
 # Random seed for reproducibility.
 SEED: int = 42
